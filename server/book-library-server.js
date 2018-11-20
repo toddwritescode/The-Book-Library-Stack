@@ -11,7 +11,7 @@ const schema = buildSchema(`
         books(title: String): [Book]
     }
     type Mutation {
-        createBook(book: String!): Book
+        createBook(title: String!, description: String!, authorFName: String!, authorLName: String!): Book
         updateBookTitle(id: Int!, title: String!): Book
     }
     type Book {
@@ -67,25 +67,23 @@ const getBooks = function(args) {
 };
 
 const createBook = function(args) {
-  if (!!args.book) {
+  if (!!args) {
+    const { title, description, authorFName, authorLName } = args;
     let author = authors.find(auth => {
-      return (
-        auth.firstName === args.book.author.firstName &&
-        author.lastName === args.book.author.lastName
-      );
+        return auth.firstName === authorFName && auth.lastName === authorLName;
     });
     if (author === undefined) {
       author = {
         id: authors.length + 1,
-        firstName: args.book.author.firstName,
-        lastName: args.book.author.lastName
+          firstName: authorFName,
+          lastName: authorLName
       };
     }
     const newBook = {
       id: books.length + 1,
-      title: book.title,
+      title: title,
       author: author,
-      description: book.description
+      description: description
     };
     books.push(newBook);
     return newBook;

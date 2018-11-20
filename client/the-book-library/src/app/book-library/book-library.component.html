@@ -1,0 +1,19 @@
+<div *ngIf="loading">
+  Loading...
+</div>
+<div *ngIf="error">
+  Error :(
+</div>
+<div *ngIf="books">
+  <div *ngFor="let book of books | async">
+    <p>{{book.title}} by {{getAuthor(book.author)}}: {{book.description}}</p>
+  </div>
+</div>
+<div [formGroup]="bookForm">
+  <label>Title</label>
+  <input type="text" formControlName="title">
+
+  <label>Description</label>
+  <input type="text" formControlName="description">
+  <button (click)="createBook()" >Create Book</button>
+</div>
